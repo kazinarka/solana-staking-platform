@@ -1,11 +1,11 @@
-use solana_program::account_info::AccountInfo;
-use solana_program::{entrypoint, msg};
-use solana_program::entrypoint::ProgramResult;
-use solana_program::program_error::ProgramError;
-use solana_program::pubkey::Pubkey;
 use crate::error::ContractError;
 use crate::processor::Processor;
 use num_traits::FromPrimitive;
+use solana_program::account_info::AccountInfo;
+use solana_program::entrypoint::ProgramResult;
+use solana_program::program_error::ProgramError;
+use solana_program::pubkey::Pubkey;
+use solana_program::{entrypoint, msg};
 
 entrypoint!(process_instruction);
 
