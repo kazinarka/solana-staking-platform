@@ -1,3 +1,9 @@
+use crate::consts::{REWARD_MINT, VAULT, WHITELIST};
+use crate::error::ContractError;
+use crate::processor::staking::claim::Accounts;
+use crate::state::claim::claim_transfer;
+use crate::state::reward_calculation::calculate_reward;
+use crate::state::structs::StakeData;
 use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::account_info::AccountInfo;
 use solana_program::clock::Clock;
@@ -5,12 +11,6 @@ use solana_program::entrypoint::ProgramResult;
 use solana_program::program::{invoke, invoke_signed};
 use solana_program::pubkey::Pubkey;
 use solana_program::sysvar::Sysvar;
-use crate::consts::{REWARD_MINT, VAULT, WHITELIST};
-use crate::error::ContractError;
-use crate::processor::staking::claim::Accounts;
-use crate::state::claim::claim_transfer;
-use crate::state::reward_calculation::calculate_reward;
-use crate::state::structs::StakeData;
 
 pub fn unstake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let accounts = Accounts::new(accounts)?;
@@ -22,20 +22,17 @@ pub fn unstake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let (stake_address, _stake_bump) =
         Pubkey::find_program_address(&[&accounts.nft_info.key.to_bytes()], &program_id);
 
-    let (vault_address, vault_bump) =
-        Pubkey::find_program_address(&[&VAULT], &program_id);
+    let (vault_address, vault_bump) = Pubkey::find_program_address(&[&VAULT], &program_id);
 
-    let payer_reward_holder =
-        spl_associated_token_account::get_associated_token_address(
-            accounts.payer.key,
-            &reward_mint,
-        );
+    let payer_reward_holder = spl_associated_token_account::get_associated_token_address(
+        accounts.payer.key,
+        &reward_mint,
+    );
 
-    let vault_reward_holder =
-        spl_associated_token_account::get_associated_token_address(
-            accounts.vault_info.key,
-            &reward_mint,
-        );
+    let vault_reward_holder = spl_associated_token_account::get_associated_token_address(
+        accounts.vault_info.key,
+        &reward_mint,
+    );
 
     let payer_nft_holder = spl_associated_token_account::get_associated_token_address(
         accounts.payer.key,
@@ -73,16 +70,13 @@ pub fn unstake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         return Err(ContractError::InvalidInstructionData.into());
     }
 
-    let metadata =
-        spl_token_metadata::state::Metadata::from_account_info(accounts.metadata_info)?;
+    let metadata = spl_token_metadata::state::Metadata::from_account_info(accounts.metadata_info)?;
     let creators = metadata.data.creators.unwrap();
     let creator = creators.first().unwrap();
     let creator_address = creator.address;
 
-    let (wl_data_address, _wl_data_address_bump) = Pubkey::find_program_address(
-        &[WHITELIST, &creator_address.to_bytes()],
-        &program_id,
-    );
+    let (wl_data_address, _wl_data_address_bump) =
+        Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], &program_id);
 
     if *accounts.whitelist_info.key != wl_data_address {
         return Err(ContractError::InvalidInstructionData.into());

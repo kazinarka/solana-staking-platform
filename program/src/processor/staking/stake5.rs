@@ -1,3 +1,9 @@
+use crate::consts::{VAULT, WHITELIST};
+use crate::error::ContractError;
+use crate::processor::staking::stake::Accounts;
+use crate::state::stake::{check_metadata_account, pay_rent, transfer_nft_to_assoc};
+use crate::state::structs::StakeData;
+use borsh::{BorshDeserialize, BorshSerialize};
 use solana_program::account_info::AccountInfo;
 use solana_program::clock::Clock;
 use solana_program::entrypoint::ProgramResult;
@@ -5,12 +11,6 @@ use solana_program::program_error::ProgramError;
 use solana_program::pubkey::Pubkey;
 use solana_program::rent::Rent;
 use solana_program::sysvar::Sysvar;
-use crate::consts::{VAULT, WHITELIST};
-use crate::state::structs::StakeData;
-use borsh::{BorshSerialize, BorshDeserialize};
-use crate::error::ContractError;
-use crate::processor::staking::stake::Accounts;
-use crate::state::stake::{check_metadata_account, pay_rent, transfer_nft_to_assoc};
 
 pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let accounts = Accounts::multiple_new(accounts)?;
@@ -52,36 +52,12 @@ pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     }
 
     for i in 1..6 {
-        let (
-            accounts,
-            stake_data,
-            stake_data_bump,
-        ) = match i {
-            1 => (
-                accounts1,
-                stake_data1,
-                stake_data_bump1,
-            ),
-            2 => (
-                accounts2,
-                stake_data2,
-                stake_data_bump2,
-            ),
-            3 => (
-                accounts3,
-                stake_data3,
-                stake_data_bump3,
-            ),
-            4 => (
-                accounts4,
-                stake_data4,
-                stake_data_bump4,
-            ),
-            5 => (
-                accounts5,
-                stake_data5,
-                stake_data_bump5,
-            ),
+        let (accounts, stake_data, stake_data_bump) = match i {
+            1 => (accounts1, stake_data1, stake_data_bump1),
+            2 => (accounts2, stake_data2, stake_data_bump2),
+            3 => (accounts3, stake_data3, stake_data_bump3),
+            4 => (accounts4, stake_data4, stake_data_bump4),
+            5 => (accounts5, stake_data5, stake_data_bump5),
             _ => {
                 return Err(ProgramError::Custom(101));
             }
@@ -122,10 +98,8 @@ pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         let creator = creators.first().unwrap();
         let creator_address = creator.address;
 
-        let (wl_data_address, _wl_data_address_bump) = Pubkey::find_program_address(
-            &[WHITELIST, &creator_address.to_bytes()],
-            &program_id,
-        );
+        let (wl_data_address, _wl_data_address_bump) =
+            Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], &program_id);
 
         if *accounts.whitelist_info.key != wl_data_address {
             return Err(ContractError::InvalidInstructionData.into());
@@ -144,8 +118,10 @@ pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
             return Err(ContractError::InvalidInstructionData.into());
         }
 
-        if &spl_associated_token_account::get_associated_token_address(accounts.payer.key, accounts.mint.key)
-            != accounts.source.key
+        if &spl_associated_token_account::get_associated_token_address(
+            accounts.payer.key,
+            accounts.mint.key,
+        ) != accounts.source.key
         {
             return Err(ContractError::InvalidInstructionData.into());
         }

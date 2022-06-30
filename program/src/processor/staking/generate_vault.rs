@@ -1,4 +1,6 @@
-use solana_program::account_info::{AccountInfo, next_account_info};
+use crate::consts::{ADMIN, VAULT};
+use crate::error::ContractError;
+use solana_program::account_info::{next_account_info, AccountInfo};
 use solana_program::entrypoint::ProgramResult;
 use solana_program::program::{invoke, invoke_signed};
 use solana_program::program_error::ProgramError;
@@ -6,16 +8,13 @@ use solana_program::pubkey::Pubkey;
 use solana_program::rent::Rent;
 use solana_program::system_instruction;
 use solana_program::sysvar::Sysvar;
-use crate::consts::{ADMIN, VAULT};
-use crate::error::ContractError;
 
 pub fn generate_vault(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let accounts = Accounts::new(accounts)?;
 
     let rent = &Rent::from_account_info(accounts.rent_info)?;
 
-    let (vault_pda, vault_bump_seed) =
-        Pubkey::find_program_address(&[VAULT], &program_id);
+    let (vault_pda, vault_bump_seed) = Pubkey::find_program_address(&[VAULT], &program_id);
 
     if accounts.pda.key != &vault_pda {
         return Err(ContractError::InvalidInstructionData.into());
@@ -35,7 +34,11 @@ pub fn generate_vault(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramR
 
         invoke(
             &system_instruction::transfer(accounts.payer.key, &vault_pda, required_lamports),
-            &[accounts.payer.clone(), accounts.pda.clone(), accounts.system_program.clone()],
+            &[
+                accounts.payer.clone(),
+                accounts.pda.clone(),
+                accounts.system_program.clone(),
+            ],
         )?;
 
         invoke_signed(

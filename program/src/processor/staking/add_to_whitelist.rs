@@ -1,4 +1,6 @@
-use solana_program::account_info::{AccountInfo, next_account_info};
+use crate::consts::{ADMIN, WHITELIST};
+use crate::error::ContractError;
+use solana_program::account_info::{next_account_info, AccountInfo};
 use solana_program::entrypoint::ProgramResult;
 use solana_program::program::{invoke, invoke_signed};
 use solana_program::program_error::ProgramError;
@@ -6,8 +8,6 @@ use solana_program::pubkey::Pubkey;
 use solana_program::rent::Rent;
 use solana_program::system_instruction;
 use solana_program::sysvar::Sysvar;
-use crate::consts::{ADMIN, WHITELIST};
-use crate::error::ContractError;
 
 pub fn add_to_whitelist(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let accounts = Accounts::new(accounts)?;
@@ -37,7 +37,11 @@ pub fn add_to_whitelist(accounts: &[AccountInfo], program_id: &Pubkey) -> Progra
 
         invoke(
             &system_instruction::transfer(accounts.payer.key, &data_address, required_lamports),
-            &[accounts.payer.clone(), accounts.whitelist_info.clone(), accounts.sys_info.clone()],
+            &[
+                accounts.payer.clone(),
+                accounts.whitelist_info.clone(),
+                accounts.sys_info.clone(),
+            ],
         )?;
 
         invoke_signed(

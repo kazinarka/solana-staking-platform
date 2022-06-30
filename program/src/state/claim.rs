@@ -1,13 +1,9 @@
-use solana_program::entrypoint::ProgramResult;
-use solana_program::program::{invoke, invoke_signed};
 use crate::consts::VAULT;
 use crate::processor::staking::claim::Accounts;
+use solana_program::entrypoint::ProgramResult;
+use solana_program::program::{invoke, invoke_signed};
 
-pub fn claim_transfer(
-    accounts: &Accounts,
-    vault_bump: u8,
-    reward: u64,
-) -> ProgramResult {
+pub fn claim_transfer(accounts: &Accounts, vault_bump: u8, reward: u64) -> ProgramResult {
     if accounts.payer_reward_holder_info.owner != accounts.token_info.key {
         invoke(
             &spl_associated_token_account::create_associated_token_account(

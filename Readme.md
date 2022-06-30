@@ -50,10 +50,10 @@ spl-token create-account <mint>
 
 - Stakes your NFT into the program vault
 
-`cargo run -- claim -e dev -s /path/to/deployer/id.json --nft <nft-token-address>`
+`cargo run -- claim -e dev -s /path/to/deployer/id.json --nft <nft-token-mint-address>`
 
 - "Claims" your tokens on your nft without unstaking
 
-`cargo run -- unstake -e dev -s /path/to/deployer/id.json --nft <nft-token-address>`
+`cargo run -- unstake -e dev -s /path/to/deployer/id.json --nft <nft-token-mint-address>`
 
 - Unstakes your NFT and claims tokens at the same time

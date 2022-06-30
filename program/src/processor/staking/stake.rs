@@ -1,15 +1,15 @@
-use solana_program::account_info::{AccountInfo, next_account_info};
+use crate::consts::{VAULT, WHITELIST};
+use crate::error::ContractError;
+use crate::state::stake::{check_metadata_account, pay_rent, transfer_nft_to_assoc};
+use crate::state::structs::StakeData;
+use borsh::{BorshDeserialize, BorshSerialize};
+use solana_program::account_info::{next_account_info, AccountInfo};
 use solana_program::clock::Clock;
 use solana_program::entrypoint::ProgramResult;
 use solana_program::program_error::ProgramError;
 use solana_program::pubkey::Pubkey;
 use solana_program::rent::Rent;
 use solana_program::sysvar::Sysvar;
-use crate::consts::{VAULT, WHITELIST};
-use crate::state::structs::StakeData;
-use borsh::{BorshSerialize, BorshDeserialize};
-use crate::error::ContractError;
-use crate::state::stake::{check_metadata_account, pay_rent, transfer_nft_to_assoc};
 
 pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let accounts = Accounts::new(accounts)?;
@@ -68,10 +68,8 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let creator = creators.first().unwrap();
     let creator_address = creator.address;
 
-    let (wl_data_address, _wl_data_address_bump) = Pubkey::find_program_address(
-        &[WHITELIST, &creator_address.to_bytes()],
-        &program_id,
-    );
+    let (wl_data_address, _wl_data_address_bump) =
+        Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], &program_id);
 
     if *accounts.whitelist_info.key != wl_data_address {
         return Err(ContractError::InvalidInstructionData.into());
@@ -91,8 +89,10 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         return Err(ContractError::InvalidInstructionData.into());
     }
 
-    if &spl_associated_token_account::get_associated_token_address(accounts.payer.key, accounts.mint.key)
-        != accounts.source.key
+    if &spl_associated_token_account::get_associated_token_address(
+        accounts.payer.key,
+        accounts.mint.key,
+    ) != accounts.source.key
     {
         return Err(ContractError::InvalidInstructionData.into());
     }
@@ -146,7 +146,9 @@ impl<'a, 'b> Accounts<'a, 'b> {
     }
 
     #[allow(dead_code)]
-    pub fn multiple_new(accounts: &'a [AccountInfo<'b>]) -> Result<Vec<Accounts<'a, 'b>>, ProgramError> {
+    pub fn multiple_new(
+        accounts: &'a [AccountInfo<'b>],
+    ) -> Result<Vec<Accounts<'a, 'b>>, ProgramError> {
         let accounts_iter = &mut accounts.iter();
 
         let payer = next_account_info(accounts_iter)?;

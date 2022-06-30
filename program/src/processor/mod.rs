@@ -2,17 +2,17 @@ pub mod staking;
 
 use crate::error::ContractError;
 use crate::instruction::PlatformInstruction;
-use borsh::BorshDeserialize;
-use solana_program::account_info::AccountInfo;
-use solana_program::entrypoint::ProgramResult;
-use solana_program::pubkey::Pubkey;
-use solana_program::msg;
 use crate::processor::staking::add_to_whitelist::add_to_whitelist;
 use crate::processor::staking::claim::claim;
 use crate::processor::staking::generate_vault::generate_vault;
-use crate::processor::staking::stake5::stake5;
 use crate::processor::staking::stake::stake;
+use crate::processor::staking::stake5::stake5;
 use crate::processor::staking::unstake::unstake;
+use borsh::BorshDeserialize;
+use solana_program::account_info::AccountInfo;
+use solana_program::entrypoint::ProgramResult;
+use solana_program::msg;
+use solana_program::pubkey::Pubkey;
 
 /// Program state handler
 pub struct Processor {}

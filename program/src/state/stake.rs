@@ -1,4 +1,7 @@
-use std::cell::Ref;
+use crate::error::ContractError;
+use crate::processor::staking::stake::Accounts;
+use crate::state::structs::StakeData;
+use borsh::BorshDeserialize;
 use solana_program::account_info::AccountInfo;
 use solana_program::entrypoint::ProgramResult;
 use solana_program::program::{invoke, invoke_signed};
@@ -6,10 +9,7 @@ use solana_program::program_error::ProgramError;
 use solana_program::pubkey::Pubkey;
 use solana_program::rent::Rent;
 use solana_program::system_instruction;
-use crate::state::structs::StakeData;
-use borsh::BorshDeserialize;
-use crate::error::ContractError;
-use crate::processor::staking::stake::Accounts;
+use std::cell::Ref;
 
 pub fn pay_rent(
     accounts: &Accounts,
@@ -17,7 +17,7 @@ pub fn pay_rent(
     rent: &Rent,
     size: u64,
     stake_data: Pubkey,
-    stake_data_bump: u8
+    stake_data_bump: u8,
 ) -> ProgramResult {
     if accounts.stake_data_info.owner != program_id {
         let required_lamports = rent
@@ -27,7 +27,11 @@ pub fn pay_rent(
 
         invoke(
             &system_instruction::transfer(accounts.payer.key, &stake_data, required_lamports),
-            &[accounts.payer.clone(), accounts.stake_data_info.clone(), accounts.sys_info.clone()],
+            &[
+                accounts.payer.clone(),
+                accounts.stake_data_info.clone(),
+                accounts.sys_info.clone(),
+            ],
         )?;
 
         invoke_signed(
@@ -46,9 +50,7 @@ pub fn pay_rent(
     Ok(())
 }
 
-pub fn transfer_nft_to_assoc(
-    accounts: &Accounts,
-) -> ProgramResult {
+pub fn transfer_nft_to_assoc(accounts: &Accounts) -> ProgramResult {
     if accounts.destination.owner != accounts.token_program.key {
         invoke(
             &spl_associated_token_account::create_associated_token_account(
@@ -89,7 +91,10 @@ pub fn transfer_nft_to_assoc(
     Ok(())
 }
 
-pub fn check_metadata_account(mint: &AccountInfo, metadata_account_info: &AccountInfo) -> ProgramResult {
+pub fn check_metadata_account(
+    mint: &AccountInfo,
+    metadata_account_info: &AccountInfo,
+) -> ProgramResult {
     if &Pubkey::find_program_address(
         &[
             "metadata".as_bytes(),
@@ -98,7 +103,7 @@ pub fn check_metadata_account(mint: &AccountInfo, metadata_account_info: &Accoun
         ],
         &spl_token_metadata::ID,
     )
-        .0 != metadata_account_info.key
+    .0 != metadata_account_info.key
     {
         return Err(ContractError::InvalidInstructionData.into());
     }
