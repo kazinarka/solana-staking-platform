@@ -5,7 +5,7 @@ pub enum PlatformInstruction {
     GenerateVault,
     AddToWhitelist,
     Stake,
-    Stake5,
+    Stake3,
     Unstake,
     Claim,
 }

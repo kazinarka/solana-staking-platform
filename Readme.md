@@ -26,7 +26,7 @@ spl-token create-account <mint>
 
 ## Set reward_mint and program_id variables in `client/src/main.rs`
 
-## Run commands below in `client` directory
+## Run commands below in `rust-client` directory
 
 `cargo build`
 
@@ -49,6 +49,10 @@ spl-token create-account <mint>
 `cargo run -- stake -e dev -s /path/to/deployer/id.json --nft <nft-token-mint-address>`
 
 - Stakes your NFT into the program vault
+
+`cargo run -- stake3 -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft1 <nft1-token-mint-address> --nft2 <nft2-token-mint-address> --nft3 <nft3-token-mint-address>`
+
+- Stakes 3 your NFTs into the program vault
 
 `cargo run -- claim -e dev -s /path/to/deployer/id.json --nft <nft-token-mint-address>`
 

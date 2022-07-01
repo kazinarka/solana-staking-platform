@@ -6,7 +6,7 @@ use crate::processor::staking::add_to_whitelist::add_to_whitelist;
 use crate::processor::staking::claim::claim;
 use crate::processor::staking::generate_vault::generate_vault;
 use crate::processor::staking::stake::stake;
-use crate::processor::staking::stake5::stake5;
+use crate::processor::staking::stake3::stake3;
 use crate::processor::staking::unstake::unstake;
 use borsh::BorshDeserialize;
 use solana_program::account_info::AccountInfo;
@@ -39,7 +39,7 @@ impl Processor {
 
             PlatformInstruction::Stake => stake(accounts, program_id)?,
 
-            PlatformInstruction::Stake5 => stake5(accounts, program_id)?,
+            PlatformInstruction::Stake3 => stake3(accounts, program_id)?,
 
             PlatformInstruction::Unstake => unstake(accounts, program_id)?,
 

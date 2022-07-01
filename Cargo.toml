@@ -1,5 +1,5 @@
 [workspace]
 members = [
     "program",
-    "client"
+    "rust-client"
 ]

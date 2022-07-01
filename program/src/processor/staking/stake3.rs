@@ -12,13 +12,11 @@ use solana_program::pubkey::Pubkey;
 use solana_program::rent::Rent;
 use solana_program::sysvar::Sysvar;
 
-pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
+pub fn stake3(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let accounts = Accounts::multiple_new(accounts)?;
     let accounts1 = accounts.get(0).unwrap();
     let accounts2 = accounts.get(1).unwrap();
     let accounts3 = accounts.get(2).unwrap();
-    let accounts4 = accounts.get(3).unwrap();
-    let accounts5 = accounts.get(4).unwrap();
 
     let clock = Clock::get()?;
 
@@ -33,10 +31,6 @@ pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         Pubkey::find_program_address(&[&accounts2.mint.key.to_bytes()], &program_id);
     let (stake_data3, stake_data_bump3) =
         Pubkey::find_program_address(&[&accounts3.mint.key.to_bytes()], &program_id);
-    let (stake_data4, stake_data_bump4) =
-        Pubkey::find_program_address(&[&accounts4.mint.key.to_bytes()], &program_id);
-    let (stake_data5, stake_data_bump5) =
-        Pubkey::find_program_address(&[&accounts5.mint.key.to_bytes()], &program_id);
 
     if !accounts1.payer.is_signer {
         return Err(ContractError::UnauthorisedAccess.into());
@@ -45,19 +39,15 @@ pub fn stake5(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     if stake_data1 != *accounts1.stake_data_info.key
         || stake_data2 != *accounts2.stake_data_info.key
         || stake_data3 != *accounts3.stake_data_info.key
-        || stake_data4 != *accounts4.stake_data_info.key
-        || stake_data5 != *accounts5.stake_data_info.key
     {
         return Err(ContractError::InvalidInstructionData.into());
     }
 
-    for i in 1..6 {
+    for i in 1..4 {
         let (accounts, stake_data, stake_data_bump) = match i {
             1 => (accounts1, stake_data1, stake_data_bump1),
             2 => (accounts2, stake_data2, stake_data_bump2),
             3 => (accounts3, stake_data3, stake_data_bump3),
-            4 => (accounts4, stake_data4, stake_data_bump4),
-            5 => (accounts5, stake_data5, stake_data_bump5),
             _ => {
                 return Err(ProgramError::Custom(101));
             }

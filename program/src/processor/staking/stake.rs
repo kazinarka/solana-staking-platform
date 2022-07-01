@@ -153,27 +153,19 @@ impl<'a, 'b> Accounts<'a, 'b> {
 
         let payer = next_account_info(accounts_iter)?;
         let mint1 = next_account_info(accounts_iter)?;
-        let metadata_account_info1 = next_account_info(accounts_iter)?;
         let mint2 = next_account_info(accounts_iter)?;
-        let metadata_account_info2 = next_account_info(accounts_iter)?;
         let mint3 = next_account_info(accounts_iter)?;
+        let metadata_account_info1 = next_account_info(accounts_iter)?;
+        let metadata_account_info2 = next_account_info(accounts_iter)?;
         let metadata_account_info3 = next_account_info(accounts_iter)?;
-        let mint4 = next_account_info(accounts_iter)?;
-        let metadata_account_info4 = next_account_info(accounts_iter)?;
-        let mint5 = next_account_info(accounts_iter)?;
-        let metadata_account_info5 = next_account_info(accounts_iter)?;
 
         let vault_info = next_account_info(accounts_iter)?;
         let source1 = next_account_info(accounts_iter)?;
-        let destination1 = next_account_info(accounts_iter)?;
         let source2 = next_account_info(accounts_iter)?;
-        let destination2 = next_account_info(accounts_iter)?;
         let source3 = next_account_info(accounts_iter)?;
+        let destination1 = next_account_info(accounts_iter)?;
+        let destination2 = next_account_info(accounts_iter)?;
         let destination3 = next_account_info(accounts_iter)?;
-        let source4 = next_account_info(accounts_iter)?;
-        let destination4 = next_account_info(accounts_iter)?;
-        let source5 = next_account_info(accounts_iter)?;
-        let destination5 = next_account_info(accounts_iter)?;
 
         let token_program = next_account_info(accounts_iter)?;
         let sys_info = next_account_info(accounts_iter)?;
@@ -183,10 +175,10 @@ impl<'a, 'b> Accounts<'a, 'b> {
         let stake_data_info1 = next_account_info(accounts_iter)?;
         let stake_data_info2 = next_account_info(accounts_iter)?;
         let stake_data_info3 = next_account_info(accounts_iter)?;
-        let stake_data_info4 = next_account_info(accounts_iter)?;
-        let stake_data_info5 = next_account_info(accounts_iter)?;
 
-        let whitelist_info = next_account_info(accounts_iter)?;
+        let whitelist_info1 = next_account_info(accounts_iter)?;
+        let whitelist_info2 = next_account_info(accounts_iter)?;
+        let whitelist_info3 = next_account_info(accounts_iter)?;
 
         Ok(vec![
             Accounts {
@@ -201,7 +193,7 @@ impl<'a, 'b> Accounts<'a, 'b> {
                 rent_info,
                 token_assoc,
                 stake_data_info: stake_data_info1,
-                whitelist_info,
+                whitelist_info: whitelist_info1,
             },
             Accounts {
                 payer,
@@ -215,7 +207,7 @@ impl<'a, 'b> Accounts<'a, 'b> {
                 rent_info,
                 token_assoc,
                 stake_data_info: stake_data_info2,
-                whitelist_info,
+                whitelist_info: whitelist_info2,
             },
             Accounts {
                 payer,
@@ -229,35 +221,7 @@ impl<'a, 'b> Accounts<'a, 'b> {
                 rent_info,
                 token_assoc,
                 stake_data_info: stake_data_info3,
-                whitelist_info,
-            },
-            Accounts {
-                payer,
-                mint: mint4,
-                metadata_account_info: metadata_account_info4,
-                vault_info,
-                source: source4,
-                destination: destination4,
-                token_program,
-                sys_info,
-                rent_info,
-                token_assoc,
-                stake_data_info: stake_data_info4,
-                whitelist_info,
-            },
-            Accounts {
-                payer,
-                mint: mint5,
-                metadata_account_info: metadata_account_info5,
-                vault_info,
-                source: source5,
-                destination: destination5,
-                token_program,
-                sys_info,
-                rent_info,
-                token_assoc,
-                stake_data_info: stake_data_info5,
-                whitelist_info,
+                whitelist_info: whitelist_info3,
             },
         ])
     }
