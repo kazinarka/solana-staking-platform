@@ -1,13 +1,33 @@
 {
   "name": "client",
   "version": "1.0.0",
-  "description": "Can log \"hello world\" and \"goodbye world\" to the console!",
+  "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": [
-    "/dist"
-  ],
+  "scripts": {
+    "prettier": "prettier --write src",
+    "build": "rimraf dist && tsc",
+    "prepare": "npm run build"
+  },
+  "keywords": [],
   "dependencies": {
-    "hwrld": "^2.1.1"
+    "@solana/spl-token": "^0.1.5",
+    "@solana/web3.js": "^1.15.0",
+    "borsh": "^0.7.0"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^15.6.1",
+    "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.3.2"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100
   }
 }
