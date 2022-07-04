@@ -15,11 +15,12 @@ pub fn pay_rent(
     accounts: &Accounts,
     program_id: &Pubkey,
     rent: &Rent,
-    size: u64,
     stake_data: Pubkey,
     stake_data_bump: u8,
 ) -> ProgramResult {
     if accounts.stake_data_info.owner != program_id {
+        let size: u64 = 8 + 32 + 32 + 8 + 1 + 8;
+
         let required_lamports = rent
             .minimum_balance(size as usize)
             .max(1)

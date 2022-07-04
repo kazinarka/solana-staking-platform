@@ -17,11 +17,9 @@
 
 `cargo run -- stake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft <nft-token-mint-address>`
 
-`cargo run -- claim -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft ERsPyu9TDKwoKJ5puB3QTuLZCzfFREq9PTsMycY6ykEZ`
+`cargo run -- claim -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft CGk9BNe6fhwBLVzUuR1Xij7CS6PUh1bWzPUiAQCVFaJ8`
 
-`cargo run -- unstake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft CaKAFXh9xrT4ULquCLVosEvEi9u29CN4WerTxAexKraP`
-
-`cargo run -- stake3 -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft1 CGk9BNe6fhwBLVzUuR1Xij7CS6PUh1bWzPUiAQCVFaJ8 --nft2 6bEgGDmR52DMB8EvJ7QJ4C1GPg1XjvrXXEfAeWgPDJDs --nft3 CaKAFXh9xrT4ULquCLVosEvEi9u29CN4WerTxAexKraP`
+`cargo run -- unstake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft CGk9BNe6fhwBLVzUuR1Xij7CS6PUh1bWzPUiAQCVFaJ8`
 
 NFT1 - 40
 CGk9BNe6fhwBLVzUuR1Xij7CS6PUh1bWzPUiAQCVFaJ8

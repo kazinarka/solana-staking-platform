@@ -33,12 +33,10 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         return Err(ContractError::InvalidInstructionData.into());
     }
 
-    let size: u64 = 8 + 32 + 32 + 8 + 1 + 8;
     pay_rent(
         &accounts,
         program_id,
         rent,
-        size,
         stake_data,
         stake_data_bump,
     )?;
@@ -143,86 +141,5 @@ impl<'a, 'b> Accounts<'a, 'b> {
             stake_data_info: next_account_info(acc_iter)?,
             whitelist_info: next_account_info(acc_iter)?,
         })
-    }
-
-    #[allow(dead_code)]
-    pub fn multiple_new(
-        accounts: &'a [AccountInfo<'b>],
-    ) -> Result<Vec<Accounts<'a, 'b>>, ProgramError> {
-        let accounts_iter = &mut accounts.iter();
-
-        let payer = next_account_info(accounts_iter)?;
-        let mint1 = next_account_info(accounts_iter)?;
-        let mint2 = next_account_info(accounts_iter)?;
-        let mint3 = next_account_info(accounts_iter)?;
-        let metadata_account_info1 = next_account_info(accounts_iter)?;
-        let metadata_account_info2 = next_account_info(accounts_iter)?;
-        let metadata_account_info3 = next_account_info(accounts_iter)?;
-
-        let vault_info = next_account_info(accounts_iter)?;
-        let source1 = next_account_info(accounts_iter)?;
-        let source2 = next_account_info(accounts_iter)?;
-        let source3 = next_account_info(accounts_iter)?;
-        let destination1 = next_account_info(accounts_iter)?;
-        let destination2 = next_account_info(accounts_iter)?;
-        let destination3 = next_account_info(accounts_iter)?;
-
-        let token_program = next_account_info(accounts_iter)?;
-        let sys_info = next_account_info(accounts_iter)?;
-        let rent_info = next_account_info(accounts_iter)?;
-        let token_assoc = next_account_info(accounts_iter)?;
-
-        let stake_data_info1 = next_account_info(accounts_iter)?;
-        let stake_data_info2 = next_account_info(accounts_iter)?;
-        let stake_data_info3 = next_account_info(accounts_iter)?;
-
-        let whitelist_info1 = next_account_info(accounts_iter)?;
-        let whitelist_info2 = next_account_info(accounts_iter)?;
-        let whitelist_info3 = next_account_info(accounts_iter)?;
-
-        Ok(vec![
-            Accounts {
-                payer,
-                mint: mint1,
-                metadata_account_info: metadata_account_info1,
-                vault_info,
-                source: source1,
-                destination: destination1,
-                token_program,
-                sys_info,
-                rent_info,
-                token_assoc,
-                stake_data_info: stake_data_info1,
-                whitelist_info: whitelist_info1,
-            },
-            Accounts {
-                payer,
-                mint: mint2,
-                metadata_account_info: metadata_account_info2,
-                vault_info,
-                source: source2,
-                destination: destination2,
-                token_program,
-                sys_info,
-                rent_info,
-                token_assoc,
-                stake_data_info: stake_data_info2,
-                whitelist_info: whitelist_info2,
-            },
-            Accounts {
-                payer,
-                mint: mint3,
-                metadata_account_info: metadata_account_info3,
-                vault_info,
-                source: source3,
-                destination: destination3,
-                token_program,
-                sys_info,
-                rent_info,
-                token_assoc,
-                stake_data_info: stake_data_info3,
-                whitelist_info: whitelist_info3,
-            },
-        ])
     }
 }
