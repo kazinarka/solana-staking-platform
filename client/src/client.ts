@@ -9,7 +9,8 @@ import {Chain} from "./chain";
 
 export const DAY = 24 * 60 * 60;
 export const NFT_AMOUNT = 3500;
-const DAILY_REWARD = 0.075;
+const DAILY_REWARD = 0.07438286;
+const LADT_DAY = 180;
 
 export class StakeInfo {
     timestamp: number;
@@ -118,9 +119,11 @@ export class Client {
         const now = await this.chain.timestamp()
 
         const timeInStake = now - stakeInfo.timestamp
-        const periods = timeInStake / DAY
+        const periods = Math.ceil(timeInStake / DAY)
 
-        return Math.ceil(periods) * DAILY_REWARD
+        return periods > LADT_DAY ? 0 : periods * DAILY_REWARD
+
+        return periods * DAILY_REWARD
     }
 
     public async getWalletPixelNFTs(pubkey: PublicKey): Promise<Nft[]> {
