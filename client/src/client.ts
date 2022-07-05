@@ -1,40 +1,15 @@
 import {
-    Blockhash,
-    Commitment,
     Connection,
-    ConnectionConfig,
     PublicKey,
-    SystemProgram,
-    SYSVAR_RENT_PUBKEY,
-    TokenAmount,
-    Transaction,
-    TransactionInstruction,
-    AccountInfo,
-    Struct,
     clusterApiUrl,
 } from '@solana/web3.js';
-import {deserialize, serialize} from "borsh"
-import {TOKEN_PROGRAM_ID, Metadata} from "@solana/spl-token";
+
 import { Metaplex, Nft } from '@metaplex-foundation/js'
-
 import {Chain} from "./chain";
-import { programs } from '@metaplex/js'
-const { metadata: { Metadata } } = programs
-const TOKEN_METADATA_PROGRAM_ID = new PublicKey(
-    "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
-)
-export const DAY = 24 * 60 * 60;
-export const M = 130.171446306642;
-export const X = 2;
-export const NFT_AMOUNT = 3500;
 
-//TODO
-//rename to camel-case
-//refactoring
-//think about fun orginizing
-//TODO !!!
-//redeploy SC
-//get staked tokens
+export const DAY = 24 * 60 * 60;
+export const NFT_AMOUNT = 3500;
+const DAILY_REWARD = 0.075;
 
 export class StakeInfo {
     timestamp: number;
@@ -135,17 +110,17 @@ export class Client {
     }
 
     public async getExpectedInterest(nft: PublicKey): Promise<number> {
-        let stakeInfo = await this.getStakeInfo(nft);
-        if (stakeInfo == undefined) {
-            return 0;
+        const stakeInfo = await this.getStakeInfo(nft)
+        if (!stakeInfo) {
+            return 0
         }
 
-        let now = await this.chain.timestamp();
+        const now = await this.chain.timestamp()
 
-        let time_in_stake = now - stakeInfo.timestamp;
-        const periods = time_in_stake / DAY;
+        const timeInStake = now - stakeInfo.timestamp
+        const periods = timeInStake / DAY
 
-        return periods * 0.075
+        return Math.ceil(periods) * DAILY_REWARD
     }
 
     public async getWalletPixelNFTs(pubkey: PublicKey): Promise<Nft[]> {
