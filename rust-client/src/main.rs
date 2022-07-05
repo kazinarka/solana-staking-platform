@@ -154,7 +154,7 @@ fn main() {
         )
         .get_matches();
 
-    let program_id = "98VZJGjpUc7QfQi9KJQsjDe1abDLDiDMD7ndT98YZY9S"
+    let program_id = "A1e6srJtSSpLxce5byNnGu6Azrs29z9G2wAwgorr5yig"
         .parse::<Pubkey>()
         .unwrap();
     let reward_mint = "7T6Tihm7XaQddHfXoKmzVDFKTS5zxYuDPCkuvu7CQLxi"
