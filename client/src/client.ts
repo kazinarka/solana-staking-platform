@@ -170,7 +170,7 @@ export class Client {
         for (const nft of Nfts) {
             const stakeInfo = await this.getStakeInfo(nft.mint)
             if (stakeInfo != undefined) {
-                if (stakeInfo.staker == owner) {
+                if (stakeInfo.staker.toString() == owner.toString()) {
                     ownerNfts.push(nft)
                 }
             }
