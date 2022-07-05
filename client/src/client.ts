@@ -11,12 +11,17 @@ import {
     TransactionInstruction,
     AccountInfo,
     Struct,
+    clusterApiUrl,
 } from '@solana/web3.js';
 import {deserialize, serialize} from "borsh"
 import {TOKEN_PROGRAM_ID, Metadata} from "@solana/spl-token";
 
 import {Chain} from "./chain";
-
+import { programs } from '@metaplex/js'
+const { metadata: { Metadata } } = programs
+const TOKEN_METADATA_PROGRAM_ID = new PublicKey(
+    "metaqbxxUerdq28cj1RbAWkYQm3ybzjb6a8bt518x1s"
+)
 export const DAY = 24 * 60 * 60;
 export const M = 130.171446306642;
 export const X = 2;
@@ -25,6 +30,7 @@ export const X = 2;
 //rename to camel-case
 //refactoring
 //think about fun orginizing
+//TODO !!!
 //redeploy SC
 //get staked tokens
 
@@ -83,8 +89,26 @@ export class Client {
     constructor() {
         this.programId = new PublicKey("A1e6srJtSSpLxce5byNnGu6Azrs29z9G2wAwgorr5yig")
         this.splAssociatedTokenProgramID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
-        this.connection = new Connection("https://api.devnet.solana.com")
+        this.connection = new Connection(clusterApiUrl('devnet'))
         this.chain = new Chain(this.connection)
+    }
+
+    public async getStakingPageInfo(nfts: PublicKey[]): Promise<StakingPageInfo> {
+        let metadata: PublicKey[] = [];
+        let expectedInterests: number[] = [];
+        let stakingPeriods: number[] = [];
+        let expectedUserInterest: number = 0;
+        let staked = nfts.length;
+
+        for (const nft of nfts) {
+            metadata.push(await this.getMetadata(nft));
+            let expectedInterest = await this.getExpectedInterest(nft);
+            expectedInterests.push(expectedInterest);
+            stakingPeriods.push(await this.getStakePeriod(nft));
+            expectedUserInterest += expectedInterest;
+        }
+
+        return new StakingPageInfo(expectedInterests, stakingPeriods, metadata, expectedUserInterest, staked)
     }
 
     public async getStakeInfo(nft: PublicKey): Promise<StakeInfo | undefined> {
@@ -118,37 +142,44 @@ export class Client {
         let now = await this.chain.timestamp();
 
         let time_in_stake = now - stakeInfo.timestamp;
-        let periods = time_in_stake / DAY;
+        const periods = time_in_stake / DAY;
 
         //add calculation_flow
         let reward = 0;
-        // for (var i = 0, i < periods, i++) {
-        //
-        // }
+        for (let i = 0; i < periods; i++) {
+
+        }
 
         return reward
     }
 
-    public async getMetadata(nft: PublicKey): Promise<PublicKey> {
-        // add Metadata
-        0
+    public async getMetadata(nft: PublicKey): Promise<StakeInfo | undefined> {
+        const result = await PublicKey.findProgramAddress([Buffer.from("metadata"), TOKEN_METADATA_PROGRAM_ID.toBuffer(), nft.toBuffer()], TOKEN_METADATA_PROGRAM_ID)
+        let acc = this.connection.getAccountInfo(result[0]);
+        if (!acc) {
+            return undefined;
+        } else {
+            return new StakeInfo(acc.data);
+        }
     }
 
-    public async getStakingPageInfo(nfts: PublicKey[]): Promise<StakingPageInfo> {
-        let metadata: PublicKey[] = [];
-        let expectedInterests: number[] = [];
-        let stakingPeriods: number[] = [];
-        let expectedUserInterest: number = 0;
-        let staked = nfts.length;
-
-        for (const nft of nfts) {
-            metadata.push(await this.getMetadata(nft));
-            let expectedInterest = await this.getExpectedInterest(nft);
-            expectedInterests.push(expectedInterest);
-            stakingPeriods.push(await this.getStakePeriod(nft));
-            expectedUserInterest += expectedInterest;
+    public async getVault(nft: PublicKey): Promise<StakeInfo | undefined> {
+        const result = await PublicKey.findProgramAddress([new Buffer('vault')], this.programId)
+        let acc = this.connection.getAccountInfo(result[0]);
+        if (!acc) {
+            return undefined;
+        } else {
+            return new StakeInfo(acc.data);
         }
+    }
 
-        return new StakingPageInfo(expectedInterests, stakingPeriods, metadata, expectedUserInterest, staked)
+    public async getStakedNftsForOwner(
+        owner : PublicKey,
+    ){
+        //беру все токены с волта
+        //смотрю только на нфт
+        //получаю stake data в цикле
+        //смотрю овнера
+        //вывожу нфт овнера
     }
 }
