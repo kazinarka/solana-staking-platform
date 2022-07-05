@@ -145,13 +145,7 @@ export class Client {
         let time_in_stake = now - stakeInfo.timestamp;
         const periods = time_in_stake / DAY;
 
-        let dailyEmission = 1
-
-        for (let i = 1; i < periods; i++) {
-            dailyEmission += M * X
-        }
-
-        return dailyEmission / NFT_AMOUNT
+        return periods * 0.075
     }
 
     public async getWalletPixelNFTs(pubkey: PublicKey): Promise<Nft[]> {
