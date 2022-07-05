@@ -177,4 +177,24 @@ export class Client {
         }
         return ownerNfts
     }
+
+    public async getStakedNftsAmount(): Promise<number> {
+        const vault = await this.getVault()
+        const Nfts: Nft[] = await this.getWalletPixelNFTs(vault)
+
+
+        return Nfts.length
+    }
+
+    public getStakedNftsSupply(
+        amount : number,
+    ): number {
+        return amount / (NFT_AMOUNT / 100)
+    }
+
+    public async getStakedNftsAmountAndSupply(): Promise<[number, number]> {
+        let amount = await this.getStakedNftsAmount()
+
+        return [amount, this.getStakedNftsSupply(amount)]
+    }
 }
