@@ -15,6 +15,7 @@ import {
 } from '@solana/web3.js';
 import {deserialize, serialize} from "borsh"
 import {TOKEN_PROGRAM_ID, Metadata} from "@solana/spl-token";
+import { Metaplex, Nft } from '@metaplex-foundation/js'
 
 import {Chain} from "./chain";
 import { programs } from '@metaplex/js'
@@ -25,6 +26,7 @@ const TOKEN_METADATA_PROGRAM_ID = new PublicKey(
 export const DAY = 24 * 60 * 60;
 export const M = 130.171446306642;
 export const X = 2;
+export const NFT_AMOUNT = 3500;
 
 //TODO
 //rename to camel-case
@@ -61,20 +63,20 @@ export class StakeInfo {
 export class StakingPageInfo {
     expectedInterests: number[];
     stakingPeriods: number[];
-    metadata: PublicKey[];
+    nfts: Nft[];
     expectedUserInterest: number;
     staked: number;
 
     constructor(
         expectedInterests: number[],
         stakingPeriods: number[],
-        metadata: PublicKey[],
+        nfts: Nft[],
         expectedUserInterest: number,
         staked: number,
     ) {
         this.expectedInterests = expectedInterests;
         this.stakingPeriods = stakingPeriods;
-        this.metadata = metadata;
+        this.nfts = nfts;
         this.expectedUserInterest = expectedUserInterest;
         this.staked = staked;
     }
@@ -93,22 +95,21 @@ export class Client {
         this.chain = new Chain(this.connection)
     }
 
-    public async getStakingPageInfo(nfts: PublicKey[]): Promise<StakingPageInfo> {
-        let metadata: PublicKey[] = [];
+    public async getStakingPageInfo(owner: PublicKey): Promise<StakingPageInfo> {
+        let nfts: Nft[] = await this.getStakedNftsForOwner(owner);
         let expectedInterests: number[] = [];
         let stakingPeriods: number[] = [];
         let expectedUserInterest: number = 0;
-        let staked = nfts.length;
+        let staked: number = nfts.length;
 
         for (const nft of nfts) {
-            metadata.push(await this.getMetadata(nft));
-            let expectedInterest = await this.getExpectedInterest(nft);
+            let expectedInterest = await this.getExpectedInterest(nft.mint);
             expectedInterests.push(expectedInterest);
-            stakingPeriods.push(await this.getStakePeriod(nft));
+            stakingPeriods.push(await this.getStakePeriod(nft.mint));
             expectedUserInterest += expectedInterest;
         }
 
-        return new StakingPageInfo(expectedInterests, stakingPeriods, metadata, expectedUserInterest, staked)
+        return new StakingPageInfo(expectedInterests, stakingPeriods, nfts, expectedUserInterest, staked)
     }
 
     public async getStakeInfo(nft: PublicKey): Promise<StakeInfo | undefined> {
@@ -144,42 +145,36 @@ export class Client {
         let time_in_stake = now - stakeInfo.timestamp;
         const periods = time_in_stake / DAY;
 
-        //add calculation_flow
-        let reward = 0;
-        for (let i = 0; i < periods; i++) {
+        let DailyEmission = (periods + 1) * M * X
 
-        }
-
-        return reward
+        return DailyEmission / NFT_AMOUNT
     }
 
-    public async getMetadata(nft: PublicKey): Promise<StakeInfo | undefined> {
-        const result = await PublicKey.findProgramAddress([Buffer.from("metadata"), TOKEN_METADATA_PROGRAM_ID.toBuffer(), nft.toBuffer()], TOKEN_METADATA_PROGRAM_ID)
-        let acc = this.connection.getAccountInfo(result[0]);
-        if (!acc) {
-            return undefined;
-        } else {
-            return new StakeInfo(acc.data);
-        }
+    public async getWalletPixelNFTs(pubkey: PublicKey): Promise<Nft[]> {
+        const allWalletNFTs = await Metaplex.make(this.connection).nfts().findAllByOwner(pubkey)
+        return allWalletNFTs.filter((nft) => nft.collection?.key.toJSON() === process.env.REACT_APP_NFT_COLLECTION_KEY)
     }
 
-    public async getVault(nft: PublicKey): Promise<StakeInfo | undefined> {
+    public async getVault(): Promise<PublicKey> {
         const result = await PublicKey.findProgramAddress([new Buffer('vault')], this.programId)
-        let acc = this.connection.getAccountInfo(result[0]);
-        if (!acc) {
-            return undefined;
-        } else {
-            return new StakeInfo(acc.data);
-        }
+        result[0]
     }
 
     public async getStakedNftsForOwner(
         owner : PublicKey,
-    ){
-        //беру все токены с волта
-        //смотрю только на нфт
-        //получаю stake data в цикле
-        //смотрю овнера
-        //вывожу нфт овнера
+    ): Promise<Nft[]> {
+        const vault = await this.getVault()
+        const Nfts: Nft[] = await this.getWalletPixelNFTs(vault)
+
+        let ownerNfts: Nft[] = []
+        for (const nft of Nfts) {
+            const stakeInfo = await this.getStakeInfo(nft.mint)
+            if (stakeInfo != undefined) {
+                if (stakeInfo.staker == owner) {
+                    ownerNfts.push(nft)
+                }
+            }
+        }
+        return ownerNfts
     }
 }
