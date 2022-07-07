@@ -22,7 +22,7 @@ pub fn add_to_whitelist(accounts: &[AccountInfo], program_id: &Pubkey) -> Progra
 
     let (data_address, data_address_bump) = Pubkey::find_program_address(
         &[WHITELIST, &accounts.creator_info.key.to_bytes()],
-        &program_id,
+        program_id,
     );
 
     if *accounts.whitelist_info.key != data_address {

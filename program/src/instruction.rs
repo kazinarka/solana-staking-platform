@@ -15,7 +15,6 @@ pub enum PlatformInstruction {
 
 impl PlatformInstruction {
     pub fn generate_vault(wallet_pubkey: Pubkey, program_id: Pubkey) -> Instruction {
-
         let (vault_pda, _) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         Instruction::new_with_borsh(
@@ -35,8 +34,11 @@ impl PlatformInstruction {
         )
     }
 
-    pub fn add_to_whitelist(wallet_pubkey: Pubkey, creator: Pubkey, program_id: Pubkey) -> Instruction {
-
+    pub fn add_to_whitelist(
+        wallet_pubkey: Pubkey,
+        creator: Pubkey,
+        program_id: Pubkey,
+    ) -> Instruction {
         let (wl_address, _) = Pubkey::find_program_address(
             &["whitelist".as_bytes(), &creator.to_bytes()],
             &program_id,
@@ -60,10 +62,15 @@ impl PlatformInstruction {
         )
     }
 
-    pub fn stake(wallet_pubkey: Pubkey, nft: Pubkey, program_id: Pubkey, metadata: Pubkey, metadata_data: Vec<u8>) -> Instruction {
-
+    pub fn stake(
+        wallet_pubkey: Pubkey,
+        nft: Pubkey,
+        program_id: Pubkey,
+        metadata: Pubkey,
+        metadata_data: Vec<u8>,
+    ) -> Instruction {
         let (vault, _vault_bump) =
-            Pubkey::find_program_address(&[&"vault".as_bytes()], &program_id);
+            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         let source =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
@@ -118,10 +125,16 @@ impl PlatformInstruction {
         )
     }
 
-    pub fn unstake(wallet_pubkey: Pubkey, nft: Pubkey, program_id: Pubkey, reward_mint: Pubkey, metadata: Pubkey, metadata_data: Vec<u8>) -> Instruction {
-
+    pub fn unstake(
+        wallet_pubkey: Pubkey,
+        nft: Pubkey,
+        program_id: Pubkey,
+        reward_mint: Pubkey,
+        metadata: Pubkey,
+        metadata_data: Vec<u8>,
+    ) -> Instruction {
         let (vault, _vault_bump) =
-            Pubkey::find_program_address(&[&"vault".as_bytes()], &program_id);
+            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         let destination =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
@@ -187,10 +200,16 @@ impl PlatformInstruction {
         )
     }
 
-    pub fn claim(wallet_pubkey: Pubkey, nft: Pubkey, program_id: Pubkey, reward_mint: Pubkey, metadata: Pubkey, metadata_data: Vec<u8>) -> Instruction {
-
+    pub fn claim(
+        wallet_pubkey: Pubkey,
+        nft: Pubkey,
+        program_id: Pubkey,
+        reward_mint: Pubkey,
+        metadata: Pubkey,
+        metadata_data: Vec<u8>,
+    ) -> Instruction {
         let (vault, _vault_bump) =
-            Pubkey::find_program_address(&[&"vault".as_bytes()], &program_id);
+            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         let destination =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);

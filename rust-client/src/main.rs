@@ -14,9 +14,6 @@ use solana_sdk::signer::keypair::Keypair;
 use solana_sdk::signer::signers::Signers;
 use solana_sdk::system_program;
 use solana_sdk::transaction::Transaction;
-use spl_associated_token_account;
-use spl_token;
-use spl_token_metadata;
 
 #[derive(Clone, Debug, PartialEq, BorshDeserialize, BorshSerialize, BorshSchema)]
 pub enum PlatformInstruction {
@@ -182,7 +179,7 @@ fn main() {
             &spl_token_metadata::ID,
         );
         let (vault, _vault_bump) =
-            Pubkey::find_program_address(&[&"vault".as_bytes()], &program_id);
+            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
         let destanation =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
         let source = spl_associated_token_account::get_associated_token_address(&vault, &nft);
@@ -270,7 +267,7 @@ fn main() {
             &spl_token_metadata::ID,
         );
         let (vault, _vault_bump) =
-            Pubkey::find_program_address(&[&"vault".as_bytes()], &program_id);
+            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
         let destanation =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
         let source = spl_associated_token_account::get_associated_token_address(&vault, &nft);
@@ -358,7 +355,7 @@ fn main() {
             &spl_token_metadata::ID,
         );
         let (vault, _vault_bump) =
-            Pubkey::find_program_address(&[&"vault".as_bytes()], &program_id);
+            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
         let source =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
         let destanation = spl_associated_token_account::get_associated_token_address(&vault, &nft);
@@ -455,7 +452,7 @@ fn main() {
         let instarctions = vec![Instruction::new_with_borsh(
             program_id,
             &PlatformInstruction::AddToWhitelist,
-            accounts.clone(),
+            accounts,
         )];
 
         let mut tx = Transaction::new_with_payer(&instarctions, Some(&wallet_pubkey));

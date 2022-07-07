@@ -18,29 +18,28 @@ const getStakingPageInfo = (req: IncomingMessage, res: ServerResponse) => {
 
     let result = await client.getStakingPageInfo(args.owner)
 
-    res.writeHead(200, {"Content-Type": "application/json"})
+    res.writeHead(200, { "Content-Type": "application/json" })
     res.end(
-        JSON.stringify({
-          success: true,
-          message: result,
-        })
+      JSON.stringify({
+        success: true,
+        message: result,
+      })
     )
   })
 }
 
 const getAmountAndSupply = (req: IncomingMessage, res: ServerResponse) => {
   req.on("end", async () => {
-
     let client = new Client()
 
     let result = await client.getStakedNftsAmountAndSupply()
 
-    res.writeHead(200, {"Content-Type": "application/json"})
+    res.writeHead(200, { "Content-Type": "application/json" })
     res.end(
-        JSON.stringify({
-          success: true,
-          message: result,
-        })
+      JSON.stringify({
+        success: true,
+        message: result,
+      })
     )
   })
 }

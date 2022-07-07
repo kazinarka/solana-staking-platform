@@ -39,7 +39,7 @@ pub fn claim_transfer(accounts: &Accounts, vault_bump: u8, reward: u64) -> Progr
             accounts.vault_info.clone(),
             accounts.token_info.clone(),
         ],
-        &[&[&VAULT, &[vault_bump]]],
+        &[&[VAULT, &[vault_bump]]],
     )?;
 
     Ok(())

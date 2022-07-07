@@ -14,7 +14,7 @@ pub fn generate_vault(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramR
 
     let rent = &Rent::from_account_info(accounts.rent_info)?;
 
-    let (vault_pda, vault_bump_seed) = Pubkey::find_program_address(&[VAULT], &program_id);
+    let (vault_pda, vault_bump_seed) = Pubkey::find_program_address(&[VAULT], program_id);
 
     if accounts.pda.key != &vault_pda {
         return Err(ContractError::InvalidInstructionData.into());

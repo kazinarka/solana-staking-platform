@@ -23,7 +23,7 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let rent = &Rent::from_account_info(accounts.rent_info)?;
 
     let (stake_data, stake_data_bump) =
-        Pubkey::find_program_address(&[&accounts.mint.key.to_bytes()], &program_id);
+        Pubkey::find_program_address(&[&accounts.mint.key.to_bytes()], program_id);
 
     if !accounts.payer.is_signer {
         return Err(ContractError::UnauthorisedAccess.into());
@@ -33,13 +33,7 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         return Err(ContractError::InvalidInstructionData.into());
     }
 
-    pay_rent(
-        &accounts,
-        program_id,
-        rent,
-        stake_data,
-        stake_data_bump,
-    )?;
+    pay_rent(&accounts, program_id, rent, stake_data, stake_data_bump)?;
 
     let harvested =
         if let Ok(data) = StakeData::try_from_slice(&accounts.stake_data_info.data.borrow()) {
@@ -67,7 +61,7 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let creator_address = creator.address;
 
     let (wl_data_address, _wl_data_address_bump) =
-        Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], &program_id);
+        Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], program_id);
 
     if *accounts.whitelist_info.key != wl_data_address {
         return Err(ContractError::InvalidInstructionData.into());
@@ -81,7 +75,7 @@ pub fn stake(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
         return Err(ContractError::UnverifiedAddress.into());
     }
 
-    let (vault, _vault_bump) = Pubkey::find_program_address(&[&VAULT], &program_id);
+    let (vault, _vault_bump) = Pubkey::find_program_address(&[VAULT], program_id);
 
     if vault != *accounts.vault_info.key {
         return Err(ContractError::InvalidInstructionData.into());

@@ -19,9 +19,9 @@ pub fn claim(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let reward_mint = REWARD_MINT.parse::<Pubkey>().unwrap();
 
     let (stake_address, _stake_bump) =
-        Pubkey::find_program_address(&[&accounts.nft_info.key.to_bytes()], &program_id);
+        Pubkey::find_program_address(&[&accounts.nft_info.key.to_bytes()], program_id);
 
-    let (vault_address, vault_bump) = Pubkey::find_program_address(&[&VAULT], &program_id);
+    let (vault_address, vault_bump) = Pubkey::find_program_address(&[VAULT], program_id);
 
     let payer_reward_holder = spl_associated_token_account::get_associated_token_address(
         accounts.payer.key,
@@ -75,7 +75,7 @@ pub fn claim(accounts: &[AccountInfo], program_id: &Pubkey) -> ProgramResult {
     let creator_address = creator.address;
 
     let (wl_data_address, _wl_data_address_bump) =
-        Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], &program_id);
+        Pubkey::find_program_address(&[WHITELIST, &creator_address.to_bytes()], program_id);
 
     if *accounts.whitelist_info.key != wl_data_address {
         return Err(ContractError::InvalidInstructionData.into());
