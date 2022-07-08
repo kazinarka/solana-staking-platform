@@ -8,6 +8,7 @@ export const NFT_AMOUNT = 3500
 const DAILY_REWARD = 0.07438286
 const MAX_REWARD = 119830787460
 const LAST_DAY = 180
+const PRECISION = 100000000
 
 export class StakeInfo {
   timestamp: number
@@ -132,8 +133,8 @@ export class Client {
 
     const reward = periods > LAST_DAY ? 0 : periods * DAILY_REWARD
 
-    if (stakeInfo.harvested + reward * 100000000 > MAX_REWARD) {
-      return (MAX_REWARD - stakeInfo.harvested) / 100000000
+    if (stakeInfo.harvested + reward * PRECISION > MAX_REWARD) {
+      return (MAX_REWARD - stakeInfo.harvested) / PRECISION
     }
 
     return reward
