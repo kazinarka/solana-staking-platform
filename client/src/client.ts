@@ -63,7 +63,7 @@ export class Client {
   public chain: Chain
 
   constructor() {
-    this.programId = new PublicKey("A1e6srJtSSpLxce5byNnGu6Azrs29z9G2wAwgorr5yig")
+    this.programId = new PublicKey("AcSRxCay2tNPoGPpiutNyDbT2D1rbPNBsNWm3qeZREMi")
     this.splAssociatedTokenProgramID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
     this.connection = new Connection(clusterApiUrl("devnet"))
     this.chain = new Chain(this.connection)
