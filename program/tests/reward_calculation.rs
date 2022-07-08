@@ -84,4 +84,22 @@ async fn test_reward_calculation() {
     );
     msg!("50% harvested => {:?}", reward);
     assert_eq!(reward, MAX_PAYOUT_PER_NFT / 2);
+
+    let reward = calculate_reward(
+        now,
+        now - SECONDS_IN_THE_DAY * (REWARD_PERIOD + 1),
+        MAX_PAYOUT_PER_NFT - 1,
+        0,
+    );
+    msg!("99% harvested => {:?}", reward);
+    assert_eq!(reward, 1);
+
+    let reward = calculate_reward(
+        now,
+        now - SECONDS_IN_THE_DAY * (REWARD_PERIOD + 1),
+        MAX_PAYOUT_PER_NFT - PAYOUT_PER_DAY * 180,
+        0,
+    );
+    msg!("99% harvested => {:?}", reward);
+    assert_eq!(reward, PAYOUT_PER_DAY * 180);
 }

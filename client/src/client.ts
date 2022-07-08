@@ -6,6 +6,7 @@ import { Chain } from "./chain"
 export const DAY = 24 * 60 * 60
 export const NFT_AMOUNT = 3500
 const DAILY_REWARD = 0.07438286
+const MAX_REWARD = 119830787460
 const LAST_DAY = 180
 
 export class StakeInfo {
@@ -129,7 +130,13 @@ export class Client {
     const timeInStake = now - stakeInfo.timestamp
     const periods = Math.ceil(timeInStake / DAY)
 
-    return periods > LAST_DAY ? 0 : periods * DAILY_REWARD
+    const reward = periods > LAST_DAY ? 0 : periods * DAILY_REWARD
+
+    if (stakeInfo.harvested + reward * 100000000 > MAX_REWARD) {
+      return (MAX_REWARD - stakeInfo.harvested) / 100000000
+    }
+
+    return reward
   }
 
   public async getWalletPixelNFTs(pubkey: PublicKey): Promise<Nft[]> {
