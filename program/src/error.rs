@@ -9,6 +9,16 @@ pub enum ContractError {
     InvalidInstructionData,
     #[error("The claimer can't submit this claim")]
     CannotSubmitThisClaim,
+    #[error("Only admin can call this instruction")]
+    UnauthorisedAccess,
+    #[error("Can`t deserialize data")]
+    DeserializeError,
+    #[error("Address is not verified")]
+    UnverifiedAddress,
+    #[error("Staking is inactive")]
+    InactiveStaking,
+    #[error("Nft is not whitelisted")]
+    WhitelistError,
 }
 
 impl From<ContractError> for ProgramError {

@@ -1,0 +1,35 @@
+{
+  "name": "client",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "prettier": "prettier --write src",
+    "build": "rimraf dist && tsc",
+    "prepare": "npm run build",
+    "start": "ts-node ./src/index.ts"
+  },
+  "keywords": [],
+  "dependencies": {
+    "@metaplex-foundation/js": "0.11.7",
+    "@solana/spl-token": "^0.1.5",
+    "@solana/web3.js": "^1.15.0",
+    "borsh": "^0.7.0"
+  },
+  "exports": {
+    ".": "./dist/index.js"
+  },
+  "devDependencies": {
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/node": "^15.6.1",
+    "prettier": "^2.3.0",
+    "rimraf": "^3.0.2",
+    "ts-node": "^10.8.2",
+    "typescript": "^4.7.4"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100
+  }
+}
