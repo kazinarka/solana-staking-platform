@@ -1,10 +1,11 @@
 [package]
-name = "pixel-platform"
+name = "pixel_platform"
 version = "0.0.1"
 edition = "2018"
 
 [features]
 no-entrypoint = []
+test-bpf = []
 
 [dependencies]
 solana-program = "1.9.0"
@@ -21,7 +22,9 @@ thiserror = "1.0.31"
 [dev-dependencies]
 solana-program-test = "=1.9.0"
 solana-sdk = "=1.9.0"
+tokio = { version = "1.6", features = ["macros"] }
+solana-client = "1.9.0"
 
 [lib]
-name = "staking"
+name = "pixel_platform"
 crate-type = ["cdylib", "lib"]

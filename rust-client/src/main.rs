@@ -178,8 +178,7 @@ fn main() {
             ],
             &spl_token_metadata::ID,
         );
-        let (vault, _vault_bump) =
-            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
+        let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
         let destanation =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
         let source = spl_associated_token_account::get_associated_token_address(&vault, &nft);
@@ -266,8 +265,7 @@ fn main() {
             ],
             &spl_token_metadata::ID,
         );
-        let (vault, _vault_bump) =
-            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
+        let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
         let destanation =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
         let source = spl_associated_token_account::get_associated_token_address(&vault, &nft);
@@ -354,8 +352,7 @@ fn main() {
             ],
             &spl_token_metadata::ID,
         );
-        let (vault, _vault_bump) =
-            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
+        let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
         let source =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
         let destanation = spl_associated_token_account::get_associated_token_address(&vault, &nft);

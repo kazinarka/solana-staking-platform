@@ -69,8 +69,7 @@ impl PlatformInstruction {
         metadata: Pubkey,
         metadata_data: Vec<u8>,
     ) -> Instruction {
-        let (vault, _vault_bump) =
-            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
+        let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         let source =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
@@ -133,8 +132,7 @@ impl PlatformInstruction {
         metadata: Pubkey,
         metadata_data: Vec<u8>,
     ) -> Instruction {
-        let (vault, _vault_bump) =
-            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
+        let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         let destination =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
@@ -208,8 +206,7 @@ impl PlatformInstruction {
         metadata: Pubkey,
         metadata_data: Vec<u8>,
     ) -> Instruction {
-        let (vault, _vault_bump) =
-            Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
+        let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
         let destination =
             spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
@@ -244,7 +241,7 @@ impl PlatformInstruction {
 
         Instruction::new_with_borsh(
             program_id,
-            &PlatformInstruction::Unstake,
+            &PlatformInstruction::Claim,
             vec![
                 AccountMeta::new(wallet_pubkey, true),
                 AccountMeta::new_readonly(system_program::id(), false),

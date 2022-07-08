@@ -1,5 +1,5 @@
 test:
-	cd program; cargo test-bpf --features "test-bpf" -- --nocapture --test-threads=1
+	cd program; cargo test-bpf --features "test-bpf" -- --nocapture --test-threads=4
 
 build:
 	cd program; cargo build-bpf
