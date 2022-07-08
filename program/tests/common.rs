@@ -46,11 +46,11 @@ impl Env {
             .parse::<Pubkey>()
             .unwrap();
 
-        let nft = "EVWuMx7if1U8uUrKJonEmVsSTrjabgowWw2BoqJHu3Nx"
+        let nft = "HgEGkd8CZxMLSittohVYzvj9T73Xa7KaY2tZ4QBDd9eX"
             .parse::<Pubkey>()
             .unwrap();
 
-        let reward_mint = "7T6Tihm7XaQddHfXoKmzVDFKTS5zxYuDPCkuvu7CQLxi"
+        let reward_mint = "5SF89AifEF7g6QhtKXwX6GjJXCxJAteBjPBn3XTWo4vP"
             .parse::<Pubkey>()
             .unwrap();
 

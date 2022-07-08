@@ -151,10 +151,10 @@ fn main() {
         )
         .get_matches();
 
-    let program_id = "A1e6srJtSSpLxce5byNnGu6Azrs29z9G2wAwgorr5yig"
+    let program_id = "AcSRxCay2tNPoGPpiutNyDbT2D1rbPNBsNWm3qeZREMi"
         .parse::<Pubkey>()
         .unwrap();
-    let reward_mint = "7T6Tihm7XaQddHfXoKmzVDFKTS5zxYuDPCkuvu7CQLxi"
+    let reward_mint = "5SF89AifEF7g6QhtKXwX6GjJXCxJAteBjPBn3XTWo4vP"
         .parse::<Pubkey>()
         .unwrap();
 

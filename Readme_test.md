@@ -10,16 +10,16 @@
 
 `cargo run -- generate_vault_address -e dev -s /home/ideasoft/.config/solana/id.json`
 
-`spl-token transfer 7T6Tihm7XaQddHfXoKmzVDFKTS5zxYuDPCkuvu7CQLxi 5000000 63HeLroEXLDnJWcTTmjkkUFg1dqTFiRx8zd3aCWNhprF --fund-recipient`
+`spl-token transfer 5SF89AifEF7g6QhtKXwX6GjJXCxJAteBjPBn3XTWo4vP 5000000 CPfTr8fTwvPNbqm4ET7xVCNXAv8fcMeMhkA1BzwaH3m3 --fund-recipient`
 
 
 `cargo run -- add_to_whitelist -e dev -s /home/ideasoft/.config/solana/id.json --creator BW9mMN9MsWBuk7Go3cPKzSjK3nTx1dzvRuvqB7YN1rE6`
 
-`cargo run -- stake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft 6bEgGDmR52DMB8EvJ7QJ4C1GPg1XjvrXXEfAeWgPDJDs`
+`cargo run -- stake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft HgEGkd8CZxMLSittohVYzvj9T73Xa7KaY2tZ4QBDd9eX`
 
-`cargo run -- claim -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft 6bEgGDmR52DMB8EvJ7QJ4C1GPg1XjvrXXEfAeWgPDJDs`
+`cargo run -- claim -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft HgEGkd8CZxMLSittohVYzvj9T73Xa7KaY2tZ4QBDd9eX`
 
-`cargo run -- unstake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft 6bEgGDmR52DMB8EvJ7QJ4C1GPg1XjvrXXEfAeWgPDJDs`
+`cargo run -- unstake -e dev -s /home/ideasoft/.config/solana/testnet-pixel-painters.json --nft HgEGkd8CZxMLSittohVYzvj9T73Xa7KaY2tZ4QBDd9eX`
 
 NFT1 - 40
 CGk9BNe6fhwBLVzUuR1Xij7CS6PUh1bWzPUiAQCVFaJ8
@@ -34,17 +34,18 @@ BAcgfvUmvGR6rTK79xX33WWVnwyHYXJ5CRLFRTPNw6W9
 NFT CREATOR
 BW9mMN9MsWBuk7Go3cPKzSjK3nTx1dzvRuvqB7YN1rE6
 
+
 VAULT
-3JfZX9T6H6euVo4aYLx9rCG7sxKdHWS1CYzBn1ErAUhG
+CPfTr8fTwvPNbqm4ET7xVCNXAv8fcMeMhkA1BzwaH3m3
 
 WHITELIST
-2EdNss874jDxTX6634cTBqBfWBxa7iWCuSQ7URoj7KrS
+5krAK8y3HiXdZzzqgo9QvsKBv2kAHM6G6FnEw2bLd99n
 
 TOKEN MINT
-7T6Tihm7XaQddHfXoKmzVDFKTS5zxYuDPCkuvu7CQLxi
+5SF89AifEF7g6QhtKXwX6GjJXCxJAteBjPBn3XTWo4vP
 
 PROGRAM ID
-98VZJGjpUc7QfQi9KJQsjDe1abDLDiDMD7ndT98YZY9S
+AcSRxCay2tNPoGPpiutNyDbT2D1rbPNBsNWm3qeZREMi
 
 ADMIN
 E5L2TjtD8nVjNxoEwgizoM4wsdrAtXg52VCnFF4BG2gg
