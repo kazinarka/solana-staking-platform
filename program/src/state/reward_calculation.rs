@@ -1,4 +1,4 @@
-use crate::consts::{MAX_PAYOUT_PER_NFT, REWARD_PERIOD, SECONDS_IN_THE_DAY};
+use crate::consts::{MAX_PAYOUT_PER_NFT, PAYOUT_PER_DAY, SECONDS_IN_THE_DAY};
 
 pub fn calculate_reward(
     clock_timestamp: u64,
@@ -8,19 +8,23 @@ pub fn calculate_reward(
 ) -> u64 {
     let periods = (clock_timestamp - stake_timestamp) / SECONDS_IN_THE_DAY;
 
-    let mut reward: f64 = 0.0;
-    for day in 0..periods {
-        if day >= REWARD_PERIOD - 1 {
-            break;
+    let mut reward = match periods {
+        0..=1 => 0,
+        2..=180 => {
+            let mut reward = 0;
+            for day in 2..=periods {
+                reward += PAYOUT_PER_DAY * (day - 1);
+            }
+            reward
         }
-        reward += 0.75;
-    }
+        _ => MAX_PAYOUT_PER_NFT,
+    };
 
-    reward -= withdrawn as f64;
+    reward -= withdrawn;
 
-    if reward > (MAX_PAYOUT_PER_NFT - harvested) as f64 {
+    if reward >= (MAX_PAYOUT_PER_NFT - harvested) {
         return MAX_PAYOUT_PER_NFT - harvested;
     }
 
-    reward as u64
+    reward
 }
