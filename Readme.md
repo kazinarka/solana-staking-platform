@@ -12,7 +12,7 @@ spl-token create-account <mint>
 
 - NOTE: replace <mint> with the returned mint address from above
 
-`spl-token mint <mint> 1000000`
+`spl-token mint <mint> 5000000`
 
 ## Set admin and reward_mint variables in `program/src/consts.rs`
 
@@ -34,7 +34,7 @@ spl-token create-account <mint>
 
 `cargo run -- generate_vault_address -e dev -s /path/to/deployer/id.json`
 
-`spl-token transfer <reward_mint> 1000000 <vault-address> --fund-recipient`
+`spl-token transfer <reward_mint> 5000000 <vault-address> --fund-recipient`
 
 - NOTE: second address is the vault address returned from `generate_vault_address` cmd
 
