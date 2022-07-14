@@ -1,3 +1,5 @@
+use crate::consts::{PROGRAM_ID, RENT};
+use crate::structs::PlatformInstruction;
 use clap::ArgMatches;
 use solana_client::rpc_client::RpcClient;
 use solana_sdk::commitment_config::CommitmentConfig;
@@ -10,8 +12,6 @@ use solana_sdk::signer::keypair::Keypair;
 use solana_sdk::signer::signers::Signers;
 use solana_sdk::system_program;
 use solana_sdk::transaction::Transaction;
-use crate::consts::{PROGRAM_ID, RENT};
-use crate::structs::PlatformInstruction;
 
 pub fn generate_vault(matches: &ArgMatches) {
     let program_id = PROGRAM_ID.parse::<Pubkey>().unwrap();

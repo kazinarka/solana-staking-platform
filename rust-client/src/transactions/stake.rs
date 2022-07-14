@@ -1,3 +1,5 @@
+use crate::consts::{ASSOCIATED_TOKEN, PROGRAM_ID, RENT};
+use crate::structs::PlatformInstruction;
 use clap::ArgMatches;
 use solana_client::rpc_client::RpcClient;
 use solana_sdk::borsh::try_from_slice_unchecked;
@@ -11,8 +13,6 @@ use solana_sdk::signer::keypair::Keypair;
 use solana_sdk::signer::signers::Signers;
 use solana_sdk::system_program;
 use solana_sdk::transaction::Transaction;
-use crate::consts::{ASSOCIATED_TOKEN, PROGRAM_ID, RENT};
-use crate::structs::PlatformInstruction;
 
 pub fn stake(matches: &ArgMatches) {
     let program_id = PROGRAM_ID.parse::<Pubkey>().unwrap();
@@ -40,8 +40,7 @@ pub fn stake(matches: &ArgMatches) {
 
     let (vault, _vault_bump) = Pubkey::find_program_address(&["vault".as_bytes()], &program_id);
 
-    let source =
-        spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
+    let source = spl_associated_token_account::get_associated_token_address(&wallet_pubkey, &nft);
 
     let destination = spl_associated_token_account::get_associated_token_address(&vault, &nft);
 
@@ -60,10 +59,8 @@ pub fn stake(matches: &ArgMatches) {
         .unwrap()
         .address;
 
-    let (wl_data_address, _wl_data_address_bump) = Pubkey::find_program_address(
-        &["whitelist".as_bytes(), &creator.to_bytes()],
-        &program_id,
-    );
+    let (wl_data_address, _wl_data_address_bump) =
+        Pubkey::find_program_address(&["whitelist".as_bytes(), &creator.to_bytes()], &program_id);
 
     let instructions = vec![Instruction::new_with_borsh(
         program_id,

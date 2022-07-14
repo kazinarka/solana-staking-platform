@@ -28,7 +28,7 @@ async fn test_generate_vault() {
 
     assert_eq!(
         vault_pda,
-        "63HeLroEXLDnJWcTTmjkkUFg1dqTFiRx8zd3aCWNhprF"
+        "CPfTr8fTwvPNbqm4ET7xVCNXAv8fcMeMhkA1BzwaH3m3"
             .parse::<Pubkey>()
             .unwrap()
     );

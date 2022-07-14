@@ -1,15 +1,15 @@
-mod structs;
 mod consts;
+mod structs;
 mod transactions;
 
-use clap::{
-    app_from_crate, crate_authors, crate_description, crate_name, crate_version, Arg, SubCommand,
-};
 use crate::transactions::add_to_whitelist::add_to_whitelist;
 use crate::transactions::claim::claim;
 use crate::transactions::generate_vault::generate_vault;
 use crate::transactions::stake::stake;
 use crate::transactions::unstake::unstake;
+use clap::{
+    app_from_crate, crate_authors, crate_description, crate_name, crate_version, Arg, SubCommand,
+};
 
 fn main() {
     let matches = app_from_crate!()
