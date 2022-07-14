@@ -129,7 +129,7 @@ export class Client {
     const now = await this.chain.timestamp()
 
     const timeInStake = now - stakeInfo.timestamp
-    const periods = Math.ceil(timeInStake / DAY)
+    const periods = Math.floor(timeInStake / DAY)
 
     const reward = periods > LAST_DAY ? 0 : periods * DAILY_REWARD
 
