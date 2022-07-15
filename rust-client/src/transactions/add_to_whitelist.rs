@@ -34,6 +34,7 @@ pub fn add_to_whitelist(matches: &ArgMatches) {
 
     let (wl_address, _) =
         Pubkey::find_program_address(&["whitelist".as_bytes(), &creator.to_bytes()], &program_id);
+    println!("{:?}", wl_address.clone());
 
     let instructions = vec![Instruction::new_with_borsh(
         program_id,
