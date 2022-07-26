@@ -63,7 +63,7 @@ export class Client {
   public chain: Chain
 
   constructor() {
-    this.programId = new PublicKey("GyC8iyGUyVxM9ovGw6DBpPnXLWXw6aAeXB2A8SEVqnN3")
+    this.programId = new PublicKey("")
     this.splAssociatedTokenProgramID = new PublicKey("ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL")
     this.connection = new Connection(clusterApiUrl("mainnet-beta"))
     this.chain = new Chain(this.connection)
@@ -138,6 +138,45 @@ export class Client {
     }
 
     return reward
+  }
+
+  public async getCurrentReward(nft: PublicKey): Promise<boolean> {
+    const stakeInfo = await this.getStakeInfo(nft)
+
+    if (!stakeInfo) {
+      return false
+    }
+
+    const now = await this.chain.timestamp()
+
+    const timeInStake = now - stakeInfo.timestamp
+    const periods = Math.floor(timeInStake / DAY)
+
+    if (periods <= 1) {
+      return false
+    }
+
+    const withdrawn = stakeInfo.withdrawn
+    const harvested = stakeInfo.harvested
+
+    if (harvested >= MAX_REWARD) {
+      return false
+    }
+
+    let reward = 0
+    if (periods >= LAST_DAY) {
+      reward = MAX_REWARD
+    } else {
+      for (let day = 2; day <= periods; day++) {
+        reward += DAILY_REWARD * PRECISION * (day - 1)
+        if (reward > withdrawn) {
+          return true
+        }
+      }
+      return false
+    }
+
+    return reward - withdrawn > 0
   }
 
   public async getWalletPixelNFTs(pubkey: PublicKey): Promise<Nft[]> {
