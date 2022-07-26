@@ -5,6 +5,6 @@ pub mod instruction;
 pub mod processor;
 pub mod state;
 
-solana_program::declare_id!("AcSRxCay2tNPoGPpiutNyDbT2D1rbPNBsNWm3qeZREMi");
+solana_program::declare_id!("");
 
 pub type Timestamp = u64;

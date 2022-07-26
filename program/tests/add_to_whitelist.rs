@@ -32,7 +32,7 @@ async fn test_add_to_whitelist() {
 
     assert_eq!(
         wl_address,
-        "GDrFnwVjX1hUWUF7b5fo3QwmcdGNySNNMEuUBXhP3m8t"
+        "5krAK8y3HiXdZzzqgo9QvsKBv2kAHM6G6FnEw2bLd99n"
             .parse::<Pubkey>()
             .unwrap()
     );
